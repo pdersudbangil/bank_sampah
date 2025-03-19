@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Antrian\Doctor;
 use App\Models\MWLWL;
+use App\Models\Report;
+use App\Models\Room;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -37,24 +39,17 @@ class HomeController extends Controller
         return abort(404);
     }
 
+    public function home()
+    {
+        return view('home');
+    }
+
     public function dashboard()
     {
-        $data = DB::table('antrian_patientwl')
-                ->join('antrian_mwlwl', 'antrian_patientwl.PATIENT_ID', '=', 'antrian_mwlwl.PATIENT_ID')
-                ->leftJoin('report_ris_2024-11-09', 'report_ris_2024-11-09.ACCESSION_NO', '=', 'antrian_mwlwl.ACCESSION_NO')
-                ->leftJoin('antrian_study_ris as sris', function ($join) {
-                    $join->on('report_ris_2024-11-09.ACCESSION_NO', '=', 'sris.ACCESSION_NO');
-                    $join->where('sris.PATIENT_LOCATION', 'Radiologi');
-                })
-                ->select('antrian_patientwl.PATIENT_ID','antrian_mwlwl.ACCESSION_NO','antrian_mwlwl.PATIENT_NAME', 'report_ris_2024-11-09.ID_REPORT_RIS', 'sris.ACCESSION_NO')
-                // ->select('antrian_mwlwl.ACCESSION_NO', 'report_ris.ACCESSION_NO', 'antrian_study_ris.ACCESSION_NO')
-                ->where('antrian_mwlwl.PATIENT_LOCATION', 'Radiologi')
-                ->groupBy('antrian_patientwl.PATIENT_ID','antrian_mwlwl.ACCESSION_NO','antrian_mwlwl.PATIENT_NAME', 'report_ris_2024-11-09.ID_REPORT_RIS', 'sris.ACCESSION_NO')
-                ->get();
-                // dd($data);
-        $doctors = Doctor::select('nama','gelar_belakang')->where('unit_ruang', 'radiologi')->limit(10)->get();
         // $data = MWLWL::select('ACCESSION_NO', 'PATIENT_NAME')->where('PATIENT_LOCATION', 'Radiologi')->get();
-        return view('antrian.dashboard', compact('data','doctors'));
+        $reports = Report::all();
+        $rooms = Room::all();
+        return view('bank_sampah.dashboard', compact('reports','rooms'));
     }
 
     public function root()

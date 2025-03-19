@@ -1,0 +1,1 @@
+<?php /**PATH D:\xampp\htdocs\bank_sampah\resources\views/bank_sampah/pages/transaction/index.blade.php ENDPATH**/ ?>

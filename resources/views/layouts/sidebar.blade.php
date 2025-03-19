@@ -31,21 +31,47 @@
             <div id="two-column-menu">
             </div>
             <ul class="navbar-nav" id="navbar-nav">
+                <li class="menu-title"><span>@lang('translation.menu')</span></li>
+                @if(Auth::user()->role == 'superadmin')
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="las la-tachometer-alt"></i> <span>Dashboard</span>
+                        <i class="las la-tachometer-alt"></i> <span>Master Data</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarDashboards">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('radiology')}}" class="nav-link">Radiology</a>
+                                <a href="{{route('type.index')}}" class="nav-link">Jenis Limbah</a>
                             </li>
                             <li class="nav-item">
-                                <a href="dashboard-crm" class="nav-link">Lab PA</a>
+                                <a href="{{route('trash.index')}}" class="nav-link">Limbah</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('room.index')}}" class="nav-link">Ruangan</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('user.index')}}" class="nav-link">Pengguna</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('report.index')}}" class="nav-link">Laporan</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('transaction.index')}}" class="nav-link">Transaksi</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{route('dashboard')}}">
+                        <i class="las la-flask"></i> <span>Dashboard</span>
+                    </a>
+                </li>
+                @else
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{route('dashboard')}}">
+                        <i class="las la-flask"></i> <span>Dashboard</span>
+                    </a>
+                </li>
+                @endif
                 <li class="menu-title"><span>@lang('translation.menu')</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">

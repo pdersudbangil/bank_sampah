@@ -44,7 +44,7 @@
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                             <input type="email" id="email" name="email"
-                                class="w-full p-2 border rounded focus:ring-2 focus:ring-green-500"
+                                class="w-full p-2 border rounded focus:ring-2 focus:ring-green-500 text-black"
                                 placeholder="Enter your email" value="{{ old('email', 'admin@themesbrand.com') }}">
                         </div>
 
@@ -52,7 +52,7 @@
                             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                             <div class="relative">
                                 <input type="password" id="password" name="password"
-                                    class="w-full p-2 border rounded focus:ring-2 focus:ring-green-500"
+                                    class="w-full p-2 border rounded focus:ring-2 focus:ring-green-500 text-black"
                                     placeholder="Enter password" value="12345678">
                                 <button type="button" id="toggle-password"
                                     class="absolute inset-y-0 right-3 flex items-center text-gray-500">

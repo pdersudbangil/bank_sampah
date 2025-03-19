@@ -22,6 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'avatar',
+        'role',
+        'room_id',
     ];
 
     /**
@@ -42,4 +44,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_id');
+    }
 }
