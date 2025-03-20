@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Pages;
+namespace App\Http\Controllers\RecycleBin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Room;
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -42,7 +42,6 @@ class UserController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8'],
-                'room_id' => ['required', 'string'],
                 'avatar' => ['nullable'],
             ]);
 
@@ -66,7 +65,6 @@ class UserController extends Controller
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
                 'role' => 'user',
-                'room_id' => $request->input('room_id'),
                 'avatar' => $avatarName,
             ]);
 

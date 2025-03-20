@@ -45,7 +45,7 @@ Form layout
 
                         <!-- <button type="button" id="add-input" class="btn btn-primary mb-2">Tambah Input</button> -->
                         <div class="mb-3">
-                            <label for="customername-field" class="form-label">Asal Ruangan</label>
+                            <label for="customername-field" class="form-label">Jenis Sampah</label>
                             <div class="col-lg-12">
                                 <select class="js-example-basic-single" name="rooms" disabled>
                                     <?php $__currentLoopData = $rooms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $room): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -61,68 +61,6 @@ Form layout
                         </div>
                         <div class="text-end">
                             <!-- <button type="submit" class="btn btn-secondary mt-2">Edit Data</button> -->
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xxl-6">
-        <div class="card">
-            <div class="card-header align-items-center d-flex bg-secondary ">
-                <h4 class="card-title mb-0 flex-grow-1 text-light">Edit Form</h4>
-            </div><!-- end card header -->
-            <div class="card-body">
-                <div class="live-preview">
-                    <form action="<?php echo e(route('report.update', $reports->id)); ?>" method="POST" enctype="multipart/form-data">
-                        <?php echo csrf_field(); ?>
-                        <?php echo method_field('PUT'); ?>
-                        <div class="mb-3">
-                            <label class="form-label">Data Sampah</label>
-                            <div id="input-container">
-                                <?php $__currentLoopData = $reports->trashes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $trash): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <div class="input-group mb-2">
-                                    <span class="input-group-text bg-dark text-light">Sampah</span>
-                                    <input type="text" name="trashes[]" class="form-control"
-                                        placeholder="Masukkan jenis sampah" value="<?php echo e($trash ?? null); ?>" required>
-
-                                    <span class="input-group-text bg-dark text-light">Total</span>
-                                    <input type="number" name="total[]" class="form-control" placeholder="Total"
-                                        required value="<?php echo e($reports->total[$index] ?? null); ?>">
-                                    <!-- <button type="button" class="btn btn-danger remove-input">Hapus</button> -->
-                                </div>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </div>
-                        </div>
-
-                        <div id="input-container">
-                            <div class="input-group mb-2">
-                                <input type="text" name="trashes[]" class="form-control"
-                                    placeholder="Masukkan jenis sampah" id="trash<?php echo e($index); ?>">
-
-                                <input type="number" name="total[]" class="form-control" placeholder="Total"
-                                    id="total<?php echo e($index); ?>">
-                                <button type="button" class="btn btn-danger remove-input">Hapus</button>
-                            </div>
-                        </div>
-                        <button type="button" id="add-input" class="btn btn-primary mb-2">Tambah Input</button>
-                        <div class="mb-3">
-                            <label for="customername-field" class="form-label">Asal Ruangan</label>
-                            <div class="col-lg-12">
-                                <select class="js-example-basic-single" name="rooms">
-                                    <?php $__currentLoopData = $rooms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $room): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($room->id); ?>"
-                                        <?php echo e(isset($room) && $room->id == $reports->rooms ? 'selected' : ''); ?>>
-                                        <?php echo e($room->name); ?>
-
-                                    </option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>
-                            </div>
-                            <div class="invalid-feedback">Please enter a customer name.</div>
-                        </div>
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-secondary mt-2">Edit Data</button>
                         </div>
                     </form>
                 </div>
@@ -163,4 +101,4 @@ Form layout
     });
 </script>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.layouts-detached', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\bank_sampah\resources\views/bank_sampah/pages/report/view.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.layouts-detached', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\bank_sampah\resources\views/bank_sampah/recycle_bin/report/view.blade.php ENDPATH**/ ?>

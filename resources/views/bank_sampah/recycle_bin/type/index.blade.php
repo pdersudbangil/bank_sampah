@@ -38,19 +38,19 @@
                             <th data-ordering="false">ID</th>
                             <th data-ordering="false">Purchase ID</th>
                             <th data-ordering="false">Title</th>
-                            <th data-ordering="false">report</th> -->
-                            <th>Nama</th>
-                            <th>Ruangan</th>
-                            <th>Daftar Sampah</th>
-                            <th>Total</th>
-                            <th>Tanggal Laporan</th>
-                            <!-- <th>Priority</th> -->
+                            <th data-ordering="false">User</th> -->
+                            <th>Jenis Limbah</th>
+                            <!-- <th>Harga</th> -->
+                            <!-- <th>Satuan</th> -->
+                            <!-- <th>Jenis Sampah</th> -->
+                            <!-- <th>Status</th>
+                            <th>Priority</th> -->
                             <th>Action</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach($reports as $report)
+                        @foreach($TypeTrashes as $TypeTrash)
                         <tr>
                             <!-- <th scope="row">
                                 <div class="form-check">
@@ -62,45 +62,16 @@
                             <td>VLZ1400087402</td>
                             <td><a href="#!">Post launch reminder/ post list</a></td>
                             <td>Joseph Parker</td> -->
-                            <td>{{$report->user->name}}</td>
-                            <td>{{$report->room->name}}</td>
-                            <td>{{$report->trashes}}</td>
-                            <td>{{$report->total}}</td>
-                            <td>{{$report->created_at}}</td>
-                            <!-- <td><img class="rounded-circle header-profile-report"
-                                    src="@if (Auth::user()->avatar != null) {{ URL::asset('images/' . Auth::user()->avatar) }}@else{{ URL::asset('bank_sampah/images/account.png') }} @endif"
-                                    alt="Header Avatar"></td> -->
-                            <!-- <td>{{$report->created_at}}</td> -->
+                            <td>{{$TypeTrash->type_of_trash}}</td>
                             <!-- <td><span class="badge bg-danger">High</span></td> -->
-                            @if(Auth::user()->role != 'user')
-                            @if(Auth::user()->room_id == '414' || Auth::user()->room_id == '434')
                             <td>
-                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
-                                data-bs-target="#editModal{{$report->id}}">Edit</button>
-                                <!-- <div class="dropdown d-inline-block">
-                                    <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="ri-more-fill align-middle"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a href="#!" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a></li>
-                                        <li><a class="dropdown-item edit-item-btn" data-bs-toggle="modal"
-                                                data-bs-target="#editModal{{$report->id}}"><i
-                                                    class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item remove-item-btn" data-bs-toggle="modal"
-                                                data-bs-target="#deleteRecordModal{{$report->id}}">
-                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div> -->
+                                <a class=" btn btn-secondary" data-bs-toggle="modal"
+                                            data-bs-target="#editModal{{$TypeTrash->id}}">Edit</a>
+                                <a class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deleteRecordModal{{$TypeTrash->id}}">Delete</a>
                             </td>
-                            @endif
-                            @endif
                         </tr>
-                        <div class="modal fade" id="editModal{{$report->id}}" tabindex="-1"
+                        <div class="modal fade" id="editModal{{$TypeTrash->id}}" tabindex="-1"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
@@ -109,39 +80,25 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close" id="close-modal"></button>
                                     </div>
-                                    <form method="POST" action="{{route('report.update', $report->id)}}"
-                                        autocomplete="off" enctype="multipart/form-data">
+                                    <form method="POST" action="{{route('type.update', $TypeTrash->id)}}" autocomplete="off"
+                                        enctype="multipart/form-data">
                                         @method('PUT')
                                         @csrf
                                         <div class="modal-body">
+
                                             <div class="mb-3">
-                                                <label for="customername-field" class="form-label">reportname</label>
+                                                <label for="customername-field" class="form-label">Jenis Limbah</label>
                                                 <input type="text" id="customername-field" class="form-control"
-                                                    placeholder="Masukkan reportname" name="name"
-                                                    value="{{ old('name', $report->name) }}" required />
-                                                <div class="invalid-feedback">Masukkan reportname</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="customername-field" class="form-label">Role</label>
-                                                <div class="col-lg-12">
-                                                    <select class="js-example-basic-single" name="role">
-                                                        <option value="{{old('name', $report->role)}}" selected>
-                                                            {{$report->role}}</option>
-                                                        <option value="superadmin">Super Admin</option>
-                                                        <option value="admin">Admin</option>
-                                                        <option value="report">report</option>
-                                                        <!-- <option value="LO">Londan</option> -->
-                                                        <!-- <option value="WY">Wyoming</option> -->
-                                                    </select>
-                                                </div>
+                                                    placeholder="Jenis Limbah" name="type_of_trash"
+                                                    value="{{ old('name', $TypeTrash->type_of_trash) }}" required />
+                                                <div class="invalid-feedback">Jenis Limbah</div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <div class="hstack gap-2 justify-content-end">
                                                 <button type="button" class="btn btn-light"
                                                     data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-success" id="add-btn">Add
-                                                    Data</button>
+                                                <button type="submit" class="btn btn-secondary">Edit Data</button>
                                                 <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
                                             </div>
                                         </div>
@@ -150,7 +107,7 @@
                             </div>
                         </div>
                         <!-- Modal -->
-                        <div class="modal fade zoomIn" id="deleteRecordModal{{$report->id}}" tabindex="-1"
+                        <div class="modal fade zoomIn" id="deleteRecordModal{{$TypeTrash->id}}" tabindex="-1"
                             aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
@@ -158,7 +115,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close" id="btn-close"></button>
                                     </div>
-                                    <form action="{{ route('report.destroy', $report->id) }}" method="post">
+                                    <form action="{{ route('type.destroy', $TypeTrash->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-body">
@@ -186,10 +143,7 @@
                         </div>
                         <!--end modal -->
                         @endforeach
-
                     </tbody>
-
-
                 </table>
             </div>
         </div>
@@ -204,52 +158,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="close-modal"></button>
             </div>
-            @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-            <form method="POST" action="{{route('report.store')}}" autocomplete="off" enctype="multipart/form-data">
+            <form method="POST" action="{{route('type.store')}}" autocomplete="off" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="customername-field" class="form-label">Nama</label>
-                        <input type="hidden" name="users" value="{{Auth::user()->id}}">
-                        <input type="text" id="customername-field" class="form-control" placeholder="Masukkan Nama"
-                            value="{{Auth::user()->name}}" required disabled />
-                        <div class="invalid-feedback">Masukkan Nama</div>
-                    </div>
 
                     <div class="mb-3">
-                        <label for="customername-field" class="form-label">Pilih Ruangan</label>
-                        <div class="col-lg-12">
-                            <select class="js-example-basic-single" name="rooms">
-                                @foreach ($rooms as $room)
-                                <option value="{{ $room->id }}">
-                                    {{ $room->name }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="invalid-feedback">Please enter a customer name.</div>
+                        <label for="customername-field" class="form-label">Jenis Limbah</label>
+                        <input type="text" id="customername-field" class="form-control"
+                            placeholder="Masukkan Jenis Limbah" name="type_of_trash" required />
+                        <div class="invalid-feedback">Masukkan Jenis Limbah</div>
                     </div>
-
-                    <div id="input-container">
-                        <div class="input-group mb-2">
-                            <input type="text" name="trashes[]" class="form-control" placeholder="Masukkan jenis sampah"
-                                required>
-                            <!-- <input type="number" name="total[]" class="form-control" placeholder="Total" required> -->
-                            <button type="button" class="btn btn-danger remove-input">Hapus</button>
-                        </div>
-                    </div>
-
-                    <button type="button" id="add-input" class="btn btn-primary">Tambah Input</button>
-
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
@@ -266,9 +184,11 @@
 @endsection
 @section('script')
 
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<!--jquery cdn-->
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
 
 <!--select2 cdn-->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -287,22 +207,5 @@
 <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
 
 <script src="{{ URL::asset('build/js/app.js') }}"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#add-input').click(function () {
-            $('#input-container').append(`
-                <div class="input-group mb-2">
-                    <input type="text" name="trashes[]" class="form-control" placeholder="Masukkan jenis sampah" required>
-                    <button type="button" class="btn btn-danger remove-input">Hapus</button>
-                </div>
-            `);
-        });
-
-        $(document).on('click', '.remove-input', function () {
-            $(this).parent().remove();
-        });
-    });
-</script>
 
 @endsection

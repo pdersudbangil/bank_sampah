@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->json('trashes')->change(); // Simpan sebagai JSON
-            $table->json('total')->change(); // Simpan sebagai JSON
+            $table->string('trashes');
+            $table->string('total');
             $table->foreignId('users')->constrained('users')->onUpdate('restrict')->onDelete('restrict');
             $table->foreignId('rooms')->constrained('rooms')->onUpdate('restrict')->onDelete('restrict');
             $table->timestamps();

@@ -12,4 +12,9 @@ class Transaction extends Model
     protected $table = 'transactions';
 
     protected $fillable = ['reports', 'price'];
+
+    public function report()
+    {
+        return $this->belongsTo(Report::class, 'reports');
+    }
 }

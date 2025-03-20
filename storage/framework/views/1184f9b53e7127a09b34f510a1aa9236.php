@@ -67,14 +67,17 @@
                             <td><?php echo e($report->user->name); ?></td>
                             <td><?php echo e($report->room->name); ?></td>
                             <td>
-                                <?php $__currentLoopData = $report->trashes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trash): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <?php echo e($trash); ?>,
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <!-- <?php $__currentLoopData = $report->trashes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trash): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php echo e($trash); ?>
+
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> -->
+                                <?php echo e(count($report->trashes)); ?> Jenis Sampah
                             </td>
                             <td>
-                                <?php $__currentLoopData = $report->total; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $total): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <!-- <?php $__currentLoopData = $report->total; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $total): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php echo e($total); ?>,
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> -->
+                                <?php echo e(array_sum($report->total)); ?> Total Sampah
                             </td>
                             <td><?php echo e($report->created_at); ?></td>
                             <!-- <td><img class="rounded-circle header-profile-report"
@@ -83,11 +86,13 @@
                             <!-- <td><?php echo e($report->created_at); ?></td> -->
                             <!-- <td><span class="badge bg-danger">High</span></td> -->
                             <?php if(Auth::user()->role != 'user'): ?>
-                            <?php if(Auth::user()->room_id == '414' || Auth::user()->room_id == '434'): ?>
+                            <?php if(Auth::user()->room_id == '217' || Auth::user()->room_id == '198'): ?>
                             <td>
-                                <a href="<?php echo e(route('report.show', $report->id)); ?>" class="btn btn-secondary add-btn">Edit</a>
+                                <a href="<?php echo e(route('report.show', $report->id)); ?>" class="btn btn-secondary add-btn">Detail</a>
                                 <a class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#deleteRecordModal<?php echo e($report->id); ?>">Delete</a>
+                                <a class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#prosesModal<?php echo e($report->id); ?>">Proses</a>
                                 <!-- <div class="dropdown d-inline-block">
                                     <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -196,6 +201,38 @@
                             </div>
                         </div>
                         <!--end modal -->
+                        <div class="modal fade zoomIn" id="prosesModal<?php echo e($report->id); ?>" tabindex="-1"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close" id="btn-close"></button>
+                                    </div>
+                                    <form action="<?php echo e(route('transaction.store', $report->id)); ?>" method="post">
+                                        <?php echo csrf_field(); ?>
+                                        <div class="modal-body">
+                                            <div class="mt-2 text-center">
+                                                <img src="<?php echo e(asset('/bank_sampah/images/process.svg')); ?>" trigger="loop"
+                                                    colors="primary:#f7b84b,secondary:#f06548"
+                                                    style="width:100px;height:100px">
+                                                <input type="hidden" name="reports" value="<?php echo e($report->id); ?>">
+                                                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                                    <h4>Anda yakin ?</h4>
+                                                    <p class="text-muted mx-4 mb-0">Dengan klik tombol proses, anda akan mengolah sampah!</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                                                <button type="button" class="btn w-sm btn-light"
+                                                    data-bs-dismiss="modal">Tutup</button>
+                                                    <button type="submit" class="btn w-sm btn-primary "
+                                                    id="delete-record">Iya, Setuju</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                     </tbody>

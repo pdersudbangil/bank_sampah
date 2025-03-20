@@ -705,7 +705,7 @@
                             <img class="rounded-circle header-profile-user" src="<?php if(Auth::user()->avatar != null): ?> <?php echo e(URL::asset('images/' . Auth::user()->avatar)); ?><?php else: ?><?php echo e(URL::asset('bank_sampah/images/account.png')); ?> <?php endif; ?>" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?php echo e(Auth::user()->name); ?></span>
-                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text"><?php echo e(Auth::user()->room->name); ?></span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text"><?php echo e(@Auth::user()->room->name); ?></span>
                             </span>
                         </span>
                     </button>

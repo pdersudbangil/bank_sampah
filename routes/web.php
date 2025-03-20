@@ -14,6 +14,12 @@ use App\Http\Controllers\Pages\TransactionController;
 use App\Http\Controllers\Pages\TrashController;
 use App\Http\Controllers\Pages\TypeTrashController;
 use App\Http\Controllers\Pages\UserController;
+use App\Http\Controllers\RecycleBin\ReportsController;
+use App\Http\Controllers\RecycleBin\RoomsController;
+use App\Http\Controllers\RecycleBin\TransactionsController;
+use App\Http\Controllers\RecycleBin\TrashesController;
+use App\Http\Controllers\RecycleBin\TypeTrashesController;
+use App\Http\Controllers\RecycleBin\UsersController;
 use App\Models\MWLWL;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -56,12 +62,24 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->middleware('auth')->name('dashboard');
 Route::get('/home', [HomeController::class, 'home'])->middleware('auth')->name('home');
 
-Route::resource('/type', TypeTrashController::class)->middleware('auth');
-Route::resource('/trash', TrashController::class)->middleware('auth');
-Route::resource('/room', RoomController::class)->middleware('auth');
-Route::resource('/user', UserController::class)->middleware('auth');
-Route::resource('/report', ReportController::class)->middleware('auth');
-Route::resource('/transaction', TransactionController::class)->middleware('auth');
+Route::prefix('bank_sampah')->group(function () {
+    Route::resource('/type', TypeTrashController::class)->middleware('auth');
+    Route::resource('/trash', TrashController::class)->middleware('auth');
+    Route::resource('/room', RoomController::class)->middleware('auth');
+    Route::resource('/user', UserController::class)->middleware('auth');
+    Route::resource('/report', ReportController::class)->middleware('auth');
+    Route::resource('/transaction', TransactionController::class)->middleware('auth');
+});
+
+Route::prefix('recycle_bin')->group(function () {
+    Route::resource('/types', TypeTrashesController::class)->middleware('auth');
+    Route::resource('/trashes', TrashesController::class)->middleware('auth');
+    Route::resource('/rooms', RoomsController::class)->middleware('auth');
+    Route::resource('/users', UsersController::class)->middleware('auth');
+    Route::resource('/reports', ReportsController::class)->middleware('auth');
+    Route::resource('/transactions', TransactionsController::class)->middleware('auth');
+    Route::post('/reports/restore/{id}', [ReportsController::class, 'restore'])->name('reports.restore');
+});
 
 Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');

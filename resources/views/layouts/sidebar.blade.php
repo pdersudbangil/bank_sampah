@@ -35,7 +35,7 @@
                 @if(Auth::user()->role == 'superadmin')
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="las la-tachometer-alt"></i> <span>Master Data</span>
+                        <i class="las la-newspaper"></i> <span>Master Data</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarDashboards">
                         <ul class="nav nav-sm flex-column">
@@ -56,6 +56,33 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{route('transaction.index')}}" class="nav-link">Transaksi</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarDashboards2" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="las la-trash-alt"></i> <span>Recycle Bin</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarDashboards2">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{route('types.index')}}" class="nav-link">Jenis Limbah</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('trashes.index')}}" class="nav-link">Limbah</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('rooms.index')}}" class="nav-link">Ruangan</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('users.index')}}" class="nav-link">Pengguna</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('reports.index')}}" class="nav-link">Laporan</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('transactions.index')}}" class="nav-link">Transaksi</a>
                             </li>
                         </ul>
                     </div>

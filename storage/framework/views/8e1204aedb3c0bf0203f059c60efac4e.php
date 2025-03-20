@@ -72,7 +72,8 @@
                                     alt="Header Avatar"></td> -->
                             <!-- <td><?php echo e($report->created_at); ?></td> -->
                             <!-- <td><span class="badge bg-danger">High</span></td> -->
-                            <?php if(Auth::user()->role != 'user' && Auth::user()->room_id == '414'): ?>
+                            <?php if(Auth::user()->role != 'user'): ?>
+                            <?php if(Auth::user()->room_id == '414' || Auth::user()->room_id == '434'): ?>
                             <td>
                                 <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
                                 data-bs-target="#editModal<?php echo e($report->id); ?>">Edit</button>
@@ -96,6 +97,7 @@
                                     </ul>
                                 </div> -->
                             </td>
+                            <?php endif; ?>
                             <?php endif; ?>
                         </tr>
                         <div class="modal fade" id="editModal<?php echo e($report->id); ?>" tabindex="-1"

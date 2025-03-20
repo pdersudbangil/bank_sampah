@@ -19,13 +19,11 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            @if(Auth::user()->room_id != '414')
             <div class="card-header">
                 <!-- <h5 class="card-title mb-0">Basic Datatables</h5> -->
                 <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
                     data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Add</button>
-                </div>
-                @endif
+            </div>
             <div class="card-body">
                 <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                     style="width:100%">
@@ -40,19 +38,19 @@
                             <th data-ordering="false">ID</th>
                             <th data-ordering="false">Purchase ID</th>
                             <th data-ordering="false">Title</th>
-                            <th data-ordering="false">report</th> -->
-                            <th>Nama</th>
-                            <th>Ruangan</th>
-                            <th>Daftar Sampah</th>
-                            <th>Total</th>
-                            <th>Tanggal Laporan</th>
-                            <!-- <th>Priority</th> -->
+                            <th data-ordering="false">User</th> -->
+                            <th>Nama Barang</th>
+                            <th>Harga</th>
+                            <th>Satuan</th>
+                            <th>Jenis Sampah</th>
+                            <!-- <th>Status</th>
+                            <th>Priority</th> -->
                             <th>Action</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach($reports as $report)
+                        @foreach($trashes as $trash)
                         <tr>
                             <!-- <th scope="row">
                                 <div class="form-check">
@@ -64,58 +62,19 @@
                             <td>VLZ1400087402</td>
                             <td><a href="#!">Post launch reminder/ post list</a></td>
                             <td>Joseph Parker</td> -->
-                            <td>{{$report->user->name}}</td>
-                            <td>{{$report->room->name}}</td>
-                            <td>
-                                <!-- @foreach($report->trashes as $trash)
-                                {{ $trash }}
-                                @endforeach -->
-                                {{ count($report->trashes) }} Jenis Sampah
-                            </td>
-                            <td>
-                                <!-- @foreach($report->total as $total)
-                                {{ $total }},
-                                @endforeach -->
-                                {{ array_sum($report->total) }} Total Sampah
-                            </td>
-                            <td>{{$report->created_at}}</td>
-                            <!-- <td><img class="rounded-circle header-profile-report"
-                                    src="@if (Auth::user()->avatar != null) {{ URL::asset('images/' . Auth::user()->avatar) }}@else{{ URL::asset('bank_sampah/images/account.png') }} @endif"
-                                    alt="Header Avatar"></td> -->
-                            <!-- <td>{{$report->created_at}}</td> -->
+                            <td>{{$trash->name}}</td>
+                            <td>{{$trash->price}}</td>
+                            <td>{{$trash->unit}}</td>
+                            <td>{{$trash->typeTrash->type_of_trash}}</td>
                             <!-- <td><span class="badge bg-danger">High</span></td> -->
-                            @if(Auth::user()->role != 'user')
-                            @if(Auth::user()->room_id == '217' || Auth::user()->room_id == '198')
                             <td>
-                                <a href="{{route('report.show', $report->id)}}" class="btn btn-secondary add-btn">Detail</a>
+                            <a class=" btn btn-secondary" data-bs-toggle="modal"
+                                            data-bs-target="#editModal{{$trash->id}}">Edit</a>
                                 <a class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteRecordModal{{$report->id}}">Delete</a>
-                                <a class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#prosesModal{{$report->id}}">Proses</a>
-                                <!-- <div class="dropdown d-inline-block">
-                                    <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="ri-more-fill align-middle"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a href="#!" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a></li>
-                                        <li><a class="dropdown-item edit-item-btn" data-bs-toggle="modal"
-                                                data-bs-target="#editModal{{$report->id}}"><i
-                                                    class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item remove-item-btn" data-bs-toggle="modal"
-                                                data-bs-target="#deleteRecordModal{{$report->id}}">
-                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div> -->
+                                            data-bs-target="#deleteRecordModal{{$trash->id}}">Delete</a>
                             </td>
-                            @endif
-                            @endif
                         </tr>
-                        <div class="modal fade" id="editModal{{$report->id}}" tabindex="-1"
+                        <div class="modal fade" id="editModal{{$trash->id}}" tabindex="-1"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
@@ -124,31 +83,51 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close" id="close-modal"></button>
                                     </div>
-                                    <form method="POST" action="{{route('report.update', $report->id)}}"
+                                    <form method="POST" action="{{route('trash.update', $trash->id)}}"
                                         autocomplete="off" enctype="multipart/form-data">
                                         @method('PUT')
                                         @csrf
                                         <div class="modal-body">
+
                                             <div class="mb-3">
-                                                <label for="customername-field" class="form-label">reportname</label>
+                                                <label for="customername-field" class="form-label">Nama Barang</label>
                                                 <input type="text" id="customername-field" class="form-control"
-                                                    placeholder="Masukkan reportname" name="name"
-                                                    value="{{ old('name', $report->name) }}" required />
-                                                <div class="invalid-feedback">Masukkan reportname</div>
+                                                    placeholder="Masukkan Nama Barang" name="name"
+                                                    value="{{ old('name', $trash->name) }}" required />
+                                                <div class="invalid-feedback">Masukkan Nama Barang</div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="customername-field" class="form-label">Role</label>
-                                                <div class="col-lg-12">
-                                                    <select class="js-example-basic-single" name="role">
-                                                        <option value="{{old('name', $report->role)}}" selected>
-                                                            {{$report->role}}</option>
-                                                        <option value="superadmin">Super Admin</option>
-                                                        <option value="admin">Admin</option>
-                                                        <option value="report">report</option>
+                                                <label for="customername-field" class="form-label">Masukkan
+                                                    Harga</label>
+                                                <input type="text" id="customername-field" class="form-control"
+                                                    placeholder="Masukkan Harga" name="price"
+                                                    value="{{ old('price', $trash->price) }}" required />
+                                                <div class="invalid-feedback">Masukkan Harga</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="customername-field" class="form-label">Satuan</label>
+                                                    <select class="js-example-basic-single" name="unit">
+                                                        <option value="{{old('unit', $trash->unit)}}" selected>{{$trash->unit}}</option>
+                                                        <option value="mg">Miligram</option>
+                                                        <option value="g">Gram</option>
+                                                        <option value="kg">Kilogram</option>
                                                         <!-- <option value="LO">Londan</option> -->
                                                         <!-- <option value="WY">Wyoming</option> -->
                                                     </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="customername-field" class="form-label">Jenis Sampah</label>
+                                                <div class="col-lg-12">
+                                                    <select class="js-example-basic-single" name="type_of_trash">
+                                                    @foreach ($typeTrashes as $typeTrash)
+                                                        <option value="{{ $typeTrash->id }}" 
+                                                            {{ isset($trash) && $trash->type_of_trash == $typeTrash->id ? 'selected' : '' }}>
+                                                            {{ $typeTrash->type_of_trash }}
+                                                        </option>
+                                                    @endforeach
+                                                    </select>
                                                 </div>
+                                                <div class="invalid-feedback">Please enter a customer name.</div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -165,7 +144,7 @@
                             </div>
                         </div>
                         <!-- Modal -->
-                        <div class="modal fade zoomIn" id="deleteRecordModal{{$report->id}}" tabindex="-1"
+                        <div class="modal fade zoomIn" id="deleteRecordModal{{$trash->id}}" tabindex="-1"
                             aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
@@ -173,7 +152,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close" id="btn-close"></button>
                                     </div>
-                                    <form action="{{ route('report.destroy', $report->id) }}" method="post">
+                                    <form action="{{ route('trash.destroy', $trash->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-body">
@@ -200,42 +179,8 @@
                             </div>
                         </div>
                         <!--end modal -->
-                        <div class="modal fade zoomIn" id="prosesModal{{$report->id}}" tabindex="-1"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close" id="btn-close"></button>
-                                    </div>
-                                    <form action="{{ route('transaction.store', $report->id) }}" method="post">
-                                        @csrf
-                                        <div class="modal-body">
-                                            <div class="mt-2 text-center">
-                                                <img src="{{asset('/bank_sampah/images/process.svg')}}" trigger="loop"
-                                                    colors="primary:#f7b84b,secondary:#f06548"
-                                                    style="width:100px;height:100px">
-                                                <input type="hidden" name="reports" value="{{$report->id}}">
-                                                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                                                    <h4>Anda yakin ?</h4>
-                                                    <p class="text-muted mx-4 mb-0">Dengan klik tombol proses, anda akan mengolah sampah!</p>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                                                <button type="button" class="btn w-sm btn-light"
-                                                    data-bs-dismiss="modal">Tutup</button>
-                                                    <button type="submit" class="btn w-sm btn-primary "
-                                                    id="delete-record">Iya, Setuju</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                         @endforeach
-
                     </tbody>
-
 
                 </table>
             </div>
@@ -251,52 +196,53 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="close-modal"></button>
             </div>
-            @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-            <form method="POST" action="{{route('report.store')}}" autocomplete="off" enctype="multipart/form-data">
+            <form method="POST" action="{{route('trash.store')}}" autocomplete="off" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="customername-field" class="form-label">Nama</label>
-                        <input type="hidden" name="users" value="{{Auth::user()->id}}">
-                        <input type="text" id="customername-field" class="form-control" placeholder="Masukkan Nama"
-                            value="{{Auth::user()->name}}" required disabled />
-                        <div class="invalid-feedback">Masukkan Nama</div>
+                    <div class="mb-3" id="modal-id" style="display: none;">
+                        <label for="id-field" class="form-label">ID</label>
+                        <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
                     </div>
 
                     <div class="mb-3">
-                        <label for="customername-field" class="form-label">Pilih Ruangan</label>
+                        <label for="customername-field" class="form-label">Nama Barang</label>
+                        <input type="text" id="customername-field" class="form-control"
+                            placeholder="Masukkan Nama Barang" name="name" required />
+                        <div class="invalid-feedback">Masukkan Nama Barang</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="customername-field" class="form-label">Harga</label>
+                        <input type="text" id="customername-field" class="form-control" placeholder="Masukkan Harga"
+                            name="price" required />
+                        <div class="invalid-feedback">Masukkan Harga</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="customername-field" class="form-label">Satuan</label>
                         <div class="col-lg-12">
-                            <select class="js-example-basic-single" name="rooms">
-                                @foreach ($rooms as $room)
-                                <option value="{{ $room->id }}">
-                                    {{ $room->name }}
-                                </option>
+                            <select class="js-example-basic-single" name="unit">
+                                <option value="mg">Miligram</option>
+                                <option value="g">Gram</option>
+                                <option value="kg">Kilogram</option>
+                                <!-- <option value="LO">Londan</option> -->
+                                <!-- <option value="WY">Wyoming</option> -->
+                            </select>
+                        </div>
+                        <div class="invalid-feedback">Pilih Satuan</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="customername-field" class="form-label">Jenis Sampah</label>
+                        <div class="col-lg-12">
+                            <select class="js-example-basic-single" name="type_of_trash">
+                                @foreach(App\Models\TypeTrash::all() as $x)
+                                <option value="{{$x->id}}">{{$x->type_of_trash}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="invalid-feedback">Please enter a customer name.</div>
                     </div>
-
-                    <div id="input-container">
-                        <div class="input-group mb-2">
-                            <input type="text" name="trashes[]" class="form-control" placeholder="Masukkan jenis sampah"
-                                required>
-                            <!-- <input type="number" name="total[]" class="form-control" placeholder="Total" required> -->
-                            <button type="button" class="btn btn-danger remove-input">Hapus</button>
-                        </div>
-                    </div>
-
-                    <button type="button" id="add-input" class="btn btn-primary">Tambah Input</button>
-
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
@@ -313,9 +259,11 @@
 @endsection
 @section('script')
 
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<!--jquery cdn-->
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
 
 <!--select2 cdn-->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -334,22 +282,5 @@
 <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
 
 <script src="{{ URL::asset('build/js/app.js') }}"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#add-input').click(function () {
-            $('#input-container').append(`
-                <div class="input-group mb-2">
-                    <input type="text" name="trashes[]" class="form-control" placeholder="Masukkan jenis sampah" required>
-                    <button type="button" class="btn btn-danger remove-input">Hapus</button>
-                </div>
-            `);
-        });
-
-        $(document).on('click', '.remove-input', function () {
-            $(this).parent().remove();
-        });
-    });
-</script>
 
 @endsection

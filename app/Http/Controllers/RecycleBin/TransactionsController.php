@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Pages;
+namespace App\Http\Controllers\RecycleBin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Report;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-class TransactionController extends Controller
+class TransactionsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $transactions = Transaction::with('report')->get();
+        $transactions = Transaction::all();
         return view('bank_sampah.pages.transaction.index', compact('transactions'));
     }
 
@@ -31,18 +30,7 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $request->validate([
-            'reports' => 'required',
-        ]);
-
-        // Simpan ke database
-        Transaction::create([
-            'reports' => $request->reports,
-        ]);
-
-        // Redirect dengan pesan sukses
-        return redirect()->back()->with('success', 'Data berhasil disimpan!');
+        //
     }
 
     /**

@@ -1,14 +1,15 @@
 @extends('layouts.layouts-detached')
 @section('title') @lang('translation.datatables') @endsection
 @section('css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"
+    type="text/css" />
 <!--datatable css-->
 <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
 <!--datatable responsive css-->
 <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet"
     type="text/css" />
 <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"
-    type="text/css" />
+
 @endsection
 @section('content')
 @component('components.breadcrumb')
@@ -65,7 +66,7 @@
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
                             <td>{{$user->role}}</td>
-                            <td>{{$user->room->name}}</td>
+                            <td>{{@$user->room->name}}</td>
                             <td><img class="rounded-circle header-profile-user"
                                     src="@if (Auth::user()->avatar != null) {{ URL::asset('images/' . Auth::user()->avatar) }}@else{{ URL::asset('bank_sampah/images/account.png') }} @endif"
                                     alt="Header Avatar"></td>
@@ -271,6 +272,19 @@
                         </div>
                         <div class="invalid-feedback">Pilih Role</div>
                     </div>
+                    <div class="mb-3">
+                        <label for="customername-field" class="form-label">Ruangan</label>
+                        <div class="col-lg-12">
+                            <select class="js-example-basic-single" name="room_id">
+                                @foreach ($rooms as $room)
+                                <option value="{{ $room->id }}">
+                                    {{ $room->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="invalid-feedback">Please enter a customer name.</div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
@@ -294,7 +308,6 @@
 <!--select2 cdn-->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<script src="{{ URL::asset('build/js/pages/select2.init.js') }}"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -306,6 +319,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
 <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
+<script src="{{ URL::asset('build/js/pages/select2.init.js') }}"></script>
 
 <script src="{{ URL::asset('build/js/app.js') }}"></script>
 

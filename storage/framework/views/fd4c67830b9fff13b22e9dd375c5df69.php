@@ -1,14 +1,15 @@
 
 <?php $__env->startSection('title'); ?> <?php echo app('translator')->get('translation.datatables'); ?> <?php $__env->stopSection(); ?>
 <?php $__env->startSection('css'); ?>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"
+    type="text/css" />
 <!--datatable css-->
 <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
 <!--datatable responsive css-->
 <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet"
     type="text/css" />
 <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"
-    type="text/css" />
+
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <?php $__env->startComponent('components.breadcrumb'); ?>
@@ -65,7 +66,7 @@
                             <td><?php echo e($user->name); ?></td>
                             <td><?php echo e($user->email); ?></td>
                             <td><?php echo e($user->role); ?></td>
-                            <td><?php echo e($user->room->name); ?></td>
+                            <td><?php echo e(@$user->room->name); ?></td>
                             <td><img class="rounded-circle header-profile-user"
                                     src="<?php if(Auth::user()->avatar != null): ?> <?php echo e(URL::asset('images/' . Auth::user()->avatar)); ?><?php else: ?><?php echo e(URL::asset('bank_sampah/images/account.png')); ?> <?php endif; ?>"
                                     alt="Header Avatar"></td>
@@ -321,6 +322,20 @@ unset($__errorArgs, $__bag); ?>"
                         </div>
                         <div class="invalid-feedback">Pilih Role</div>
                     </div>
+                    <div class="mb-3">
+                        <label for="customername-field" class="form-label">Ruangan</label>
+                        <div class="col-lg-12">
+                            <select class="js-example-basic-single" name="room_id">
+                                <?php $__currentLoopData = $rooms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $room): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($room->id); ?>">
+                                    <?php echo e($room->name); ?>
+
+                                </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                        <div class="invalid-feedback">Please enter a customer name.</div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
@@ -344,7 +359,6 @@ unset($__errorArgs, $__bag); ?>"
 <!--select2 cdn-->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<script src="<?php echo e(URL::asset('build/js/pages/select2.init.js')); ?>"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -356,6 +370,7 @@ unset($__errorArgs, $__bag); ?>"
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
 <script src="<?php echo e(URL::asset('build/js/pages/datatables.init.js')); ?>"></script>
+<script src="<?php echo e(URL::asset('build/js/pages/select2.init.js')); ?>"></script>
 
 <script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
 

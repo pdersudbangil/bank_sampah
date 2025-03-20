@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('reports')->constrained('reports')->onUpdate('restrict')->onDelete('restrict');
-            $table->string('price');
+            $table->string('price')->nullable();
             $table->timestamps();
         });
     }

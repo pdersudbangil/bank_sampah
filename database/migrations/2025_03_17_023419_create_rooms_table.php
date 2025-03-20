@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('users')->constrained('users')->onUpdate('restrict')->onDelete('restrict');
+            // $table->foreignId('users')->constrained('users')->onUpdate('restrict')->onDelete('restrict');
             $table->string('name');
             $table->timestamps();
         });

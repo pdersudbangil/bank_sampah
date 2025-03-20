@@ -19,13 +19,13 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            @if(Auth::user()->room_id != '414')
-            <div class="card-header">
-                <!-- <h5 class="card-title mb-0">Basic Datatables</h5> -->
+            <!-- @if(Auth::user()->room_id != '414')
+                <div class="card-header">
+                <h5 class="card-title mb-0">Basic Datatables</h5>
                 <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
                     data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Add</button>
                 </div>
-                @endif
+            @endif -->
             <div class="card-body">
                 <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                     style="width:100%">
@@ -45,7 +45,7 @@
                             <th>Ruangan</th>
                             <th>Daftar Sampah</th>
                             <th>Total</th>
-                            <th>Tanggal Laporan</th>
+                            <th>Tanggal Dihapus</th>
                             <!-- <th>Priority</th> -->
                             <th>Action</th>
                         </tr>
@@ -78,41 +78,41 @@
                                 @endforeach -->
                                 {{ array_sum($report->total) }} Total Sampah
                             </td>
-                            <td>{{$report->created_at}}</td>
+                            <td>{{$report->deleted_at}}</td>
                             <!-- <td><img class="rounded-circle header-profile-report"
                                     src="@if (Auth::user()->avatar != null) {{ URL::asset('images/' . Auth::user()->avatar) }}@else{{ URL::asset('bank_sampah/images/account.png') }} @endif"
                                     alt="Header Avatar"></td> -->
                             <!-- <td>{{$report->created_at}}</td> -->
                             <!-- <td><span class="badge bg-danger">High</span></td> -->
                             @if(Auth::user()->role != 'user')
-                            @if(Auth::user()->room_id == '217' || Auth::user()->room_id == '198')
-                            <td>
-                                <a href="{{route('report.show', $report->id)}}" class="btn btn-secondary add-btn">Detail</a>
-                                <a class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteRecordModal{{$report->id}}">Delete</a>
-                                <a class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#prosesModal{{$report->id}}">Proses</a>
-                                <!-- <div class="dropdown d-inline-block">
-                                    <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="ri-more-fill align-middle"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a href="#!" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a></li>
-                                        <li><a class="dropdown-item edit-item-btn" data-bs-toggle="modal"
-                                                data-bs-target="#editModal{{$report->id}}"><i
-                                                    class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item remove-item-btn" data-bs-toggle="modal"
-                                                data-bs-target="#deleteRecordModal{{$report->id}}">
-                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div> -->
-                            </td>
-                            @endif
+                                @if(Auth::user()->room_id == '217' || Auth::user()->room_id == '198')
+                                <td>
+                                    <a href="{{route('reports.show', $report->id)}}" class="btn btn-secondary add-btn">Detail</a>
+                                    <a class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteRecordModal{{$report->id}}">Delete</a>
+                                    <a class="btn btn-warning" data-bs-toggle="modal"
+                                                data-bs-target="#deletesRecordModal{{$report->id}}">Restore</a>
+                                    <!-- <div class="dropdown d-inline-block">
+                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="ri-more-fill align-middle"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a href="#!" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a></li>
+                                            <li><a class="dropdown-item edit-item-btn" data-bs-toggle="modal"
+                                                    data-bs-target="#editModal{{$report->id}}"><i
+                                                        class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item remove-item-btn" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteRecordModal{{$report->id}}">
+                                                    <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div> -->
+                                </td>
+                                @endif
                             @endif
                         </tr>
                         <div class="modal fade" id="editModal{{$report->id}}" tabindex="-1"
@@ -124,7 +124,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close" id="close-modal"></button>
                                     </div>
-                                    <form method="POST" action="{{route('report.update', $report->id)}}"
+                                    <form method="POST" action="{{route('reports.update', $report->id)}}"
                                         autocomplete="off" enctype="multipart/form-data">
                                         @method('PUT')
                                         @csrf
@@ -183,8 +183,40 @@
                                                     style="width:100px;height:100px"></lord-icon>
                                                 <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
                                                     <h4>Are you Sure ?</h4>
-                                                    <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this
-                                                        Record ?</p>
+                                                    <p class="text-muted mx-4 mb-0">Yakin ingin hapus data?</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                                                <button type="button" class="btn w-sm btn-light"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn w-sm btn-danger "
+                                                    id="delete-record">Yes,
+                                                    Delete It!</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade zoomIn" id="deletesRecordModal{{$report->id}}" tabindex="-1"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close" id="btn-close"></button>
+                                    </div>
+                                    <form action="{{ route('reports.restore', $report->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <div class="modal-body">
+                                            <div class="mt-2 text-center">
+                                                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                                                    colors="primary:#f7b84b,secondary:#f06548"
+                                                    style="width:100px;height:100px"></lord-icon>
+                                                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                                    <h4>Are you Sure ?</h4>
+                                                    <p class="text-muted mx-4 mb-0">Yakin restore data?</p>
                                                 </div>
                                             </div>
                                             <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
@@ -200,38 +232,6 @@
                             </div>
                         </div>
                         <!--end modal -->
-                        <div class="modal fade zoomIn" id="prosesModal{{$report->id}}" tabindex="-1"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close" id="btn-close"></button>
-                                    </div>
-                                    <form action="{{ route('transaction.store', $report->id) }}" method="post">
-                                        @csrf
-                                        <div class="modal-body">
-                                            <div class="mt-2 text-center">
-                                                <img src="{{asset('/bank_sampah/images/process.svg')}}" trigger="loop"
-                                                    colors="primary:#f7b84b,secondary:#f06548"
-                                                    style="width:100px;height:100px">
-                                                <input type="hidden" name="reports" value="{{$report->id}}">
-                                                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                                                    <h4>Anda yakin ?</h4>
-                                                    <p class="text-muted mx-4 mb-0">Dengan klik tombol proses, anda akan mengolah sampah!</p>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                                                <button type="button" class="btn w-sm btn-light"
-                                                    data-bs-dismiss="modal">Tutup</button>
-                                                    <button type="submit" class="btn w-sm btn-primary "
-                                                    id="delete-record">Iya, Setuju</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                         @endforeach
 
                     </tbody>

@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Pages;
+namespace App\Http\Controllers\RecycleBin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Report;
-use App\Models\Transaction;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
-class TransactionController extends Controller
+class RoomsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $transactions = Transaction::with('report')->get();
-        return view('bank_sampah.pages.transaction.index', compact('transactions'));
+        $rooms = Room::all();
+        return view('bank_sampah.pages.room.index', compact('rooms'));
     }
 
     /**
@@ -33,12 +32,12 @@ class TransactionController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'reports' => 'required',
+            'name' => 'required|string|max:255',
         ]);
 
         // Simpan ke database
-        Transaction::create([
-            'reports' => $request->reports,
+        Room::create([
+            'name' => $request->name,
         ]);
 
         // Redirect dengan pesan sukses
@@ -66,7 +65,19 @@ class TransactionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        // Cari data berdasarkan ID
+        $room = Room::findOrFail($id);
+
+        // Update data
+        $room->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->back()->with('success', 'Data berhasil diperbarui!');
     }
 
     /**
@@ -74,6 +85,17 @@ class TransactionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            // Cari data berdasarkan ID
+            $room = Room::findOrFail($id);
+
+            // Hapus data
+            $room->delete();
+
+            // Redirect dengan pesan sukses
+            return redirect()->back()->with('success', 'Data berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+        }
     }
 }

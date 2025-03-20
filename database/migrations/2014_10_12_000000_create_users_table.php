@@ -22,8 +22,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('role')->default('user');
-            $table->foreignId('room_id')->constrained('rooms')->onUpdate('restrict')->onDelete('restrict'); 
-            $table->text('avatar');
+            $table->foreignId('room_id')->nullable()->constrained('rooms')->onUpdate('restrict')->onDelete('restrict'); 
+            $table->text('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

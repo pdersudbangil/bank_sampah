@@ -45,7 +45,7 @@ Form layout
 
                         <!-- <button type="button" id="add-input" class="btn btn-primary mb-2">Tambah Input</button> -->
                         <div class="mb-3">
-                            <label for="customername-field" class="form-label">Asal Ruangan</label>
+                            <label for="customername-field" class="form-label">Jenis Sampah</label>
                             <div class="col-lg-12">
                                 <select class="js-example-basic-single" name="rooms" disabled>
                                     @foreach ($rooms as $room)
@@ -60,67 +60,6 @@ Form layout
                         </div>
                         <div class="text-end">
                             <!-- <button type="submit" class="btn btn-secondary mt-2">Edit Data</button> -->
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xxl-6">
-        <div class="card">
-            <div class="card-header align-items-center d-flex bg-secondary ">
-                <h4 class="card-title mb-0 flex-grow-1 text-light">Edit Form</h4>
-            </div><!-- end card header -->
-            <div class="card-body">
-                <div class="live-preview">
-                    <form action="{{route('report.update', $reports->id)}}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3">
-                            <label class="form-label">Data Sampah</label>
-                            <div id="input-container">
-                                @foreach($reports->trashes as $index => $trash)
-                                <div class="input-group mb-2">
-                                    <span class="input-group-text bg-dark text-light">Sampah</span>
-                                    <input type="text" name="trashes[]" class="form-control"
-                                        placeholder="Masukkan jenis sampah" value="{{ $trash ?? null }}" required>
-
-                                    <span class="input-group-text bg-dark text-light">Total</span>
-                                    <input type="number" name="total[]" class="form-control" placeholder="Total"
-                                        required value="{{ $reports->total[$index] ?? null }}">
-                                    <!-- <button type="button" class="btn btn-danger remove-input">Hapus</button> -->
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <div id="input-container">
-                            <div class="input-group mb-2">
-                                <input type="text" name="trashes[]" class="form-control"
-                                    placeholder="Masukkan jenis sampah" id="trash{{$index}}">
-
-                                <input type="number" name="total[]" class="form-control" placeholder="Total"
-                                    id="total{{$index}}">
-                                <button type="button" class="btn btn-danger remove-input">Hapus</button>
-                            </div>
-                        </div>
-                        <button type="button" id="add-input" class="btn btn-primary mb-2">Tambah Input</button>
-                        <div class="mb-3">
-                            <label for="customername-field" class="form-label">Asal Ruangan</label>
-                            <div class="col-lg-12">
-                                <select class="js-example-basic-single" name="rooms">
-                                    @foreach ($rooms as $room)
-                                    <option value="{{ $room->id }}"
-                                        {{ isset($room) && $room->id == $reports->rooms ? 'selected' : '' }}>
-                                        {{ $room->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="invalid-feedback">Please enter a customer name.</div>
-                        </div>
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-secondary mt-2">Edit Data</button>
                         </div>
                     </form>
                 </div>
