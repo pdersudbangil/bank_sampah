@@ -11,10 +11,15 @@ class Transaction extends Model
 
     protected $table = 'transactions';
 
-    protected $fillable = ['reports', 'price'];
+    protected $fillable = ['reports', 'price', 'trashes', 'total', 'proces'];
 
     public function report()
     {
         return $this->belongsTo(Report::class, 'reports');
+    }
+
+    public function trash()
+    {
+        return $this->belongsTo(Trash::class, 'id');
     }
 }

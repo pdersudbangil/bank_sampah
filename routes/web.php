@@ -69,6 +69,7 @@ Route::prefix('bank_sampah')->group(function () {
     Route::resource('/user', UserController::class)->middleware('auth');
     Route::resource('/report', ReportController::class)->middleware('auth');
     Route::resource('/transaction', TransactionController::class)->middleware('auth');
+    Route::post('/view_transaction', TrashController::class, 'updateTransaction');
 });
 
 Route::prefix('recycle_bin')->group(function () {

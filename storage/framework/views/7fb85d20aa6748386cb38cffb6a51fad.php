@@ -24,20 +24,20 @@ Form layout
             </div><!-- end card header -->
             <div class="card-body">
                 <div class="live-preview">
-                    <form action="<?php echo e(route('report.update', $reports->id)); ?>" method="POST" enctype="multipart/form-data">
+                    <form action="#" method="POST" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
                         <?php echo method_field('PUT'); ?>
                         <div class="mb-3">
                             <label class="form-label">Data Sampah</label>
                             <div>
-                                <?php $__currentLoopData = $reports->trashes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $trash): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trash): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <div class="input-group mb-2">
-                                    <input type="text" name="trashes[]" class="form-control"
-                                        placeholder="Masukkan jenis sampah" value="<?php echo e($trash ?? null); ?>" required
+                                    <input type="text" class="form-control"
+                                        placeholder="Masukkan jenis sampah" value="<?php echo e($trash->trashes ?? null); ?>" required
                                         disabled>
 
-                                    <input type="number" name="total[]" class="form-control" placeholder="Total"
-                                        required value="<?php echo e($reports->total[$index] ?? null); ?>" disabled>
+                                    <input type="number" class="form-control" placeholder="Total"
+                                        required value="<?php echo e($trash->total); ?>" disabled>
                                 </div>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
@@ -50,7 +50,7 @@ Form layout
                                 <select class="js-example-basic-single" name="rooms" disabled>
                                     <?php $__currentLoopData = $rooms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $room): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($room->id); ?>"
-                                        <?php echo e(isset($room) && $room->id == $reports->rooms ? 'selected' : ''); ?>>
+                                        >
                                         <?php echo e($room->name); ?>
 
                                     </option>
@@ -74,21 +74,21 @@ Form layout
             </div><!-- end card header -->
             <div class="card-body">
                 <div class="live-preview">
-                    <form action="<?php echo e(route('report.update', $reports->id)); ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?php echo e(route('transaction.update', $trash->reports)); ?>" method="POST" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
                         <?php echo method_field('PUT'); ?>
                         <div class="mb-3">
                             <label class="form-label">Data Sampah</label>
                             <div id="input-container">
-                                <?php $__currentLoopData = $reports->trashes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $trash): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trash): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <div class="input-group mb-2">
                                     <span class="input-group-text bg-dark text-light">Sampah</span>
                                     <input type="text" name="trashes[]" class="form-control"
-                                        placeholder="Masukkan jenis sampah" value="<?php echo e($trash ?? null); ?>" required>
+                                        placeholder="Masukkan jenis sampah" value="<?php echo e($trash->trashes ?? null); ?>" required>
 
                                     <span class="input-group-text bg-dark text-light">Total</span>
-                                    <input type="number" name="total[]" class="form-control" placeholder="Total"
-                                        required value="<?php echo e($reports->total[$index] ?? null); ?>">
+                                    <input type="number" name="total[]" class="form-control" placeholder="Total" value="<?php echo e($trash->total); ?>"
+                                        required>
                                     <!-- <button type="button" class="btn btn-danger remove-input">Hapus</button> -->
                                 </div>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -97,12 +97,10 @@ Form layout
 
                         <div id="input-container">
                             <div class="input-group mb-2">
-                                <input type="text" name="trashes[]" class="form-control"
-                                    placeholder="Masukkan jenis sampah" id="trash<?php echo e($index); ?>">
 
-                                <input type="number" name="total[]" class="form-control" placeholder="Total"
-                                    id="total<?php echo e($index); ?>">
-                                <button type="button" class="btn btn-danger remove-input">Hapus</button>
+                                <!-- <input type="number" name="total[]" class="form-control" placeholder="Total"
+                                    id="#">  -->
+                                <!-- <button type="button" class="btn btn-danger remove-input">Hapus</button> -->
                             </div>
                         </div>
                         <button type="button" id="add-input" class="btn btn-primary mb-2">Tambah Input</button>
@@ -112,7 +110,7 @@ Form layout
                                 <select class="js-example-basic-single" name="rooms">
                                     <?php $__currentLoopData = $rooms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $room): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($room->id); ?>"
-                                        <?php echo e(isset($room) && $room->id == $reports->rooms ? 'selected' : ''); ?>>
+                                        >
                                         <?php echo e($room->name); ?>
 
                                     </option>

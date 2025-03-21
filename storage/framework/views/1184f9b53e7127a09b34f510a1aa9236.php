@@ -44,7 +44,7 @@
                             <th>Nama</th>
                             <th>Ruangan</th>
                             <th>Daftar Sampah</th>
-                            <th>Total</th>
+                            <!-- <th>Total</th> -->
                             <th>Tanggal Laporan</th>
                             <!-- <th>Priority</th> -->
                             <th>Action</th>
@@ -64,21 +64,21 @@
                             <td>VLZ1400087402</td>
                             <td><a href="#!">Post launch reminder/ post list</a></td>
                             <td>Joseph Parker</td> -->
-                            <td><?php echo e($report->user->name); ?></td>
-                            <td><?php echo e($report->room->name); ?></td>
+                            <td><?php echo e(@$report->user->name); ?></td>
+                            <td><?php echo e(@$report->room->name); ?></td>
                             <td>
                                 <!-- <?php $__currentLoopData = $report->trashes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trash): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php echo e($trash); ?>
 
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> -->
-                                <?php echo e(count($report->trashes)); ?> Jenis Sampah
+                                <?php echo e(array_sum($report->total)); ?> Jenis Sampah
                             </td>
-                            <td>
-                                <!-- <?php $__currentLoopData = $report->total; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $total): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <!-- <td>
+                                <?php $__currentLoopData = $report->total; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $total): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php echo e($total); ?>,
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> -->
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <?php echo e(array_sum($report->total)); ?> Total Sampah
-                            </td>
+                            </td> -->
                             <td><?php echo e($report->created_at); ?></td>
                             <!-- <td><img class="rounded-circle header-profile-report"
                                     src="<?php if(Auth::user()->avatar != null): ?> <?php echo e(URL::asset('images/' . Auth::user()->avatar)); ?><?php else: ?><?php echo e(URL::asset('bank_sampah/images/account.png')); ?> <?php endif; ?>"
@@ -91,8 +91,8 @@
                                 <a href="<?php echo e(route('report.show', $report->id)); ?>" class="btn btn-secondary add-btn">Detail</a>
                                 <a class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#deleteRecordModal<?php echo e($report->id); ?>">Delete</a>
-                                <a class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#prosesModal<?php echo e($report->id); ?>">Proses</a>
+                                <!-- <a class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#prosesModal<?php echo e($report->id); ?>">Proses</a> -->
                                 <!-- <div class="dropdown d-inline-block">
                                     <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -288,16 +288,32 @@
                         <div class="invalid-feedback">Please enter a customer name.</div>
                     </div>
 
-                    <div id="input-container">
+                    <div class="mb-3">
+                        <label for="customername-field" class="form-label">Pilih Sampah</label>
+                        <div class="col-lg-12">
+                            <select class="js-example-basic-single" name="trashes[]" multiple="multiple">
+                                <!-- <option selected>Pilih Sampah</option> -->
+                                <?php $__currentLoopData = $trashes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trash): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($trash->name); ?>">
+                                    <?php echo e($trash->name); ?>
+
+                                </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                        <div class="invalid-feedback">Please enter a customer name.</div>
+                    </div>
+
+                    <!-- <div id="input-container">
                         <div class="input-group mb-2">
                             <input type="text" name="trashes[]" class="form-control" placeholder="Masukkan jenis sampah"
                                 required>
-                            <!-- <input type="number" name="total[]" class="form-control" placeholder="Total" required> -->
+                            <input type="number" name="total[]" class="form-control" placeholder="Total" required>
                             <button type="button" class="btn btn-danger remove-input">Hapus</button>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <button type="button" id="add-input" class="btn btn-primary">Tambah Input</button>
+                    <!-- <button type="button" id="add-input" class="btn btn-primary">Tambah Input</button> -->
 
                 </div>
                 <div class="modal-footer">

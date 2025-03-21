@@ -44,7 +44,7 @@
                             <th>Nama</th>
                             <th>Ruangan</th>
                             <th>Daftar Sampah</th>
-                            <th>Total</th>
+                            <!-- <th>Total</th> -->
                             <th>Tanggal Laporan</th>
                             <!-- <th>Priority</th> -->
                             <th>Action</th>
@@ -64,20 +64,20 @@
                             <td>VLZ1400087402</td>
                             <td><a href="#!">Post launch reminder/ post list</a></td>
                             <td>Joseph Parker</td> -->
-                            <td>{{$report->user->name}}</td>
-                            <td>{{$report->room->name}}</td>
+                            <td>{{@$report->user->name}}</td>
+                            <td>{{@$report->room->name}}</td>
                             <td>
                                 <!-- @foreach($report->trashes as $trash)
                                 {{ $trash }}
                                 @endforeach -->
-                                {{ count($report->trashes) }} Jenis Sampah
+                                {{ array_sum($report->total) }} Jenis Sampah
                             </td>
-                            <td>
-                                <!-- @foreach($report->total as $total)
+                            <!-- <td>
+                                @foreach($report->total as $total)
                                 {{ $total }},
-                                @endforeach -->
+                                @endforeach
                                 {{ array_sum($report->total) }} Total Sampah
-                            </td>
+                            </td> -->
                             <td>{{$report->created_at}}</td>
                             <!-- <td><img class="rounded-circle header-profile-report"
                                     src="@if (Auth::user()->avatar != null) {{ URL::asset('images/' . Auth::user()->avatar) }}@else{{ URL::asset('bank_sampah/images/account.png') }} @endif"
@@ -90,8 +90,8 @@
                                 <a href="{{route('report.show', $report->id)}}" class="btn btn-secondary add-btn">Detail</a>
                                 <a class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#deleteRecordModal{{$report->id}}">Delete</a>
-                                <a class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#prosesModal{{$report->id}}">Proses</a>
+                                <!-- <a class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#prosesModal{{$report->id}}">Proses</a> -->
                                 <!-- <div class="dropdown d-inline-block">
                                     <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -286,16 +286,31 @@
                         <div class="invalid-feedback">Please enter a customer name.</div>
                     </div>
 
-                    <div id="input-container">
+                    <div class="mb-3">
+                        <label for="customername-field" class="form-label">Pilih Sampah</label>
+                        <div class="col-lg-12">
+                            <select class="js-example-basic-single" name="trashes[]" multiple="multiple">
+                                <!-- <option selected>Pilih Sampah</option> -->
+                                @foreach ($trashes as $trash)
+                                <option value="{{ $trash->name }}">
+                                    {{ $trash->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="invalid-feedback">Please enter a customer name.</div>
+                    </div>
+
+                    <!-- <div id="input-container">
                         <div class="input-group mb-2">
                             <input type="text" name="trashes[]" class="form-control" placeholder="Masukkan jenis sampah"
                                 required>
-                            <!-- <input type="number" name="total[]" class="form-control" placeholder="Total" required> -->
+                            <input type="number" name="total[]" class="form-control" placeholder="Total" required>
                             <button type="button" class="btn btn-danger remove-input">Hapus</button>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <button type="button" id="add-input" class="btn btn-primary">Tambah Input</button>
+                    <!-- <button type="button" id="add-input" class="btn btn-primary">Tambah Input</button> -->
 
                 </div>
                 <div class="modal-footer">

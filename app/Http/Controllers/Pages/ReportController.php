@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Pages;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
 use App\Models\Room;
+use App\Models\Transaction;
+use App\Models\Trash;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -27,7 +29,8 @@ class ReportController extends Controller
             return $report;
         });
         $rooms = Room::all();
-        return view('bank_sampah.pages.report.index', compact('reports','rooms'));
+        $trashes = Trash::all();
+        return view('bank_sampah.pages.report.index', compact('reports','rooms','trashes'));
     }
 
     /**
@@ -45,32 +48,43 @@ class ReportController extends Controller
     {
         // dd($request->all());
         try {
-            // Validasi input
             $request->validate([
-                'users' => 'required',
-                'rooms' => 'required',
                 'trashes' => 'required|array',
-                'trashes.*' => 'string|max:255',
+                'rooms' => 'required',
+                'users' => 'required',
             ]);
+        
+            // $total = '';
+            // Simpan satu per satu
+            foreach ($request->trashes as $trashId) {
+                // $total += $trashId;
+                $data[] = [
+                    'trashes' => $trashId,  // Sama untuk semua sampah
+                ];
+            }
 
-            // dd($request->all());
-    
-            // Simpan data satu per satu
-            Report::create([
-                'users' => $request->users,
+            $data_header = [
+                'total' => count($request->trashes),
                 'rooms' => $request->rooms,
-                'trashes' => json_encode($request->trashes), // Simpan sebagai JSON
-            ]);
-    
+                'users' => $request->users,
+            ];
+
+            // dd($data);
+            $insert_header = Report::create($data_header);
+
+            foreach($data as $item){
+                $item['reports'] = $insert_header->id;
+                $insert_item = Transaction::create($item);
+            }
+        
             return redirect()->back()->with('success', 'Data sampah berhasil disimpan!');
         
         } catch (\Exception $e) {
-            // Logging error untuk debugging
             dd($e->getMessage());
             Log::error('Gagal menyimpan data sampah: ' . $e->getMessage());
-    
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data. Coba lagi!');
         }
+        
     }
 
     /**
@@ -79,16 +93,13 @@ class ReportController extends Controller
     public function show(string $id)
     {
         // Ambil data berdasarkan ID
-        $reports = Report::findOrFail($id);
-
-        // Konversi trashes & total ke array agar bisa di-looping
-        $reports->trashes = json_decode($reports->trashes, true) ?? [];
-        $reports->total = json_decode($reports->total, true) ?? [];
+        $transactions = Transaction::all()->where('reports', $id);
+        // dd($transactions);
 
         // Ambil daftar rooms
         $rooms = Room::all();
 
-        return view('bank_sampah.pages.report.view', compact('reports', 'rooms'));
+        return view('bank_sampah.pages.report.view', compact('transactions', 'rooms'));
     }
 
 
@@ -127,7 +138,7 @@ class ReportController extends Controller
             $report->save();
 
             // Redirect kembali dengan pesan sukses
-            return redirect()->route('report.show', $id)->with('success', 'Data berhasil diperbarui!');
+            return redirect()->route('report.index')->with('success', 'Data berhasil diperbarui!');
         } catch (QueryException $e) {
             // Tangkap error dari database
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan ke database: ' . $e->getMessage());
